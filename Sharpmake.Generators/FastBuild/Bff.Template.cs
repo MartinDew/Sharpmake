@@ -399,6 +399,8 @@ Compiler( '[fastBuildNasmCompilerName]' )
             + ' [cmdLineOptions.SmallerTypeCheck]'
             + ' [cmdLineOptions.BasicRuntimeChecks]'
             + ' [cmdLineOptions.RuntimeLibrary]'
+            + ' [cmdLineOptions.EnableModules]'
+            + ' [cmdLineOptions.BuildStlModules]'
             + ' [cmdLineOptions.StructMemberAlignment]'
             + ' [cmdLineOptions.BufferSecurityCheck]'
             + ' [cmdLineOptions.EnableFunctionLevelLinking]'
