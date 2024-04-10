@@ -1258,10 +1258,13 @@ namespace Sharpmake
                     [DevEnvVersion(minimum = DevEnv.vs2017)]
                     GNU17,
 
+                    [DevEnvVersion(minimum = DevEnv.vs2019)]
+                    CPP23,
+                    
                     /// <summary>
                     /// Preview - Features from the Latest C++ Working Draft
                     /// </summary>
-                    [DevEnvVersion(minimum = DevEnv.vs2015)]
+                    [DevEnvVersion(minimum = DevEnv.vs2019)]
                     Latest
                 }
 
@@ -1380,6 +1383,22 @@ namespace Sharpmake
                     [Default]
                     Disable,
                     [DevEnvVersion(minimum = DevEnv.vs2019)]
+                    Enable
+                }
+
+                public enum EnableModules
+                {
+                    [Default]
+                    Disable,
+                    [DevEnvVersion(minimum = DevEnv.vs2022)]
+                    Enable
+                }
+                
+                public enum BuildStlModules
+                {
+                    [Default]
+                    Disable,
+                    [DevEnvVersion(minimum = DevEnv.vs2022)]
                     Enable
                 }
             }

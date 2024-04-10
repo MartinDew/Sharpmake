@@ -508,6 +508,8 @@ namespace Sharpmake.Generators.VisualStudio
             Options.Option(Options.Vc.General.WarningLevel.EnableAllWarnings, () => { context.Options["WarningLevel"] = "EnableAllWarnings"; context.CommandLineOptions["WarningLevel"] = "/Wall"; })
             );
 
+            
+            
             //Options.Vc.General.TreatWarnigAsError.
             //    Disable                                 WarnAsError="false"
             //    Enable                                  WarnAsError="true"                              /WX
@@ -769,6 +771,16 @@ namespace Sharpmake.Generators.VisualStudio
             {
                 context.Options["RuntimeLibrary"] = FileGeneratorUtilities.RemoveLineTag;
             }
+            
+            context.SelectOption(
+                Options.Option(Options.Vc.Compiler.EnableModules.Enable, () => { context.Options["EnableModules"] = "true"; context.CommandLineOptions["EnableModules"] = "/experimental:module"; }),
+                Options.Option(Options.Vc.Compiler.EnableModules.Disable, () => { context.Options["EnableModules"] = FileGeneratorUtilities.RemoveLineTag; context.CommandLineOptions["EnableModules"] = FileGeneratorUtilities.RemoveLineTag; })
+            );
+            
+            context.SelectOption(
+                Options.Option(Options.Vc.Compiler.BuildStlModules.Enable, () => { context.Options["BuildStlModules"] = "true"; context.CommandLineOptions["BuildStlModules"] = "/reference \"std=std.ifc\""; }),
+                Options.Option(Options.Vc.Compiler.BuildStlModules.Disable, () => { context.Options["BuildStlModules"] = FileGeneratorUtilities.RemoveLineTag; context.CommandLineOptions["BuildStlModules"] = FileGeneratorUtilities.RemoveLineTag; })
+            );
 
             bool clrSupport = Util.IsDotNet(context.Configuration);
             if (!clrSupport && context.DevelopmentEnvironment.IsVisualStudio() && context.DevelopmentEnvironment < DevEnv.vs2019) // Gm is deprecated starting with vs2019
