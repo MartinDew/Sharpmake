@@ -1389,17 +1389,19 @@ namespace Sharpmake
                 public enum EnableModules
                 {
                     [Default]
-                    Disable,
+                    Default,
                     [DevEnvVersion(minimum = DevEnv.vs2022)]
-                    Enable
+                    Enable,
+                    Disable,
                 }
                 
                 public enum BuildStlModules
                 {
                     [Default]
-                    Disable,
+                    Default,
                     [DevEnvVersion(minimum = DevEnv.vs2022)]
-                    Enable
+                    Enable,
+                    Disable,
                 }
             }
 

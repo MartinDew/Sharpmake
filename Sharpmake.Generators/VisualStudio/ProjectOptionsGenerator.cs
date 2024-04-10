@@ -773,13 +773,16 @@ namespace Sharpmake.Generators.VisualStudio
             }
             
             context.SelectOption(
+                
+                Options.Option(Options.Vc.Compiler.EnableModules.Default, () => { context.Options["EnableModules"] = FileGeneratorUtilities.RemoveLineTag; context.CommandLineOptions["EnableModules"] = FileGeneratorUtilities.RemoveLineTag; }),
                 Options.Option(Options.Vc.Compiler.EnableModules.Enable, () => { context.Options["EnableModules"] = "true"; context.CommandLineOptions["EnableModules"] = "/experimental:module"; }),
-                Options.Option(Options.Vc.Compiler.EnableModules.Disable, () => { context.Options["EnableModules"] = FileGeneratorUtilities.RemoveLineTag; context.CommandLineOptions["EnableModules"] = FileGeneratorUtilities.RemoveLineTag; })
+                Options.Option(Options.Vc.Compiler.EnableModules.Disable, () => { context.Options["EnableModules"] = "false"; context.CommandLineOptions["EnableModules"] = FileGeneratorUtilities.RemoveLineTag; })
             );
             
             context.SelectOption(
+                Options.Option(Options.Vc.Compiler.BuildStlModules.Default, () => { context.Options["GenerateManifest"] = FileGeneratorUtilities.RemoveLineTag; context.CommandLineOptions["BuildStlModules"] = FileGeneratorUtilities.RemoveLineTag; }),
                 Options.Option(Options.Vc.Compiler.BuildStlModules.Enable, () => { context.Options["BuildStlModules"] = "true"; context.CommandLineOptions["BuildStlModules"] = "/reference \"std=std.ifc\""; }),
-                Options.Option(Options.Vc.Compiler.BuildStlModules.Disable, () => { context.Options["BuildStlModules"] = FileGeneratorUtilities.RemoveLineTag; context.CommandLineOptions["BuildStlModules"] = FileGeneratorUtilities.RemoveLineTag; })
+                Options.Option(Options.Vc.Compiler.BuildStlModules.Disable, () => { context.Options["BuildStlModules"] = "false"; context.CommandLineOptions["BuildStlModules"] = FileGeneratorUtilities.RemoveLineTag; })
             );
 
             bool clrSupport = Util.IsDotNet(context.Configuration);

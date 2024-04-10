@@ -352,7 +352,7 @@ namespace Sharpmake.Generators.VisualStudio
                 FillIncludeDirectoriesOptions(context);
                 FillLibrariesOptions(context);
 
-                context.Reset(); // just a safety, not necessary to clean up
+                // context.Reset(); // just a safety, not necessary to clean up
             }
         }
 
