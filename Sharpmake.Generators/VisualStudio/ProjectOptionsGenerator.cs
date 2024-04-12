@@ -778,13 +778,14 @@ namespace Sharpmake.Generators.VisualStudio
                 Options.Option(Options.Vc.Compiler.EnableModules.Enable, () => { context.Options["EnableModules"] = "true"; context.CommandLineOptions["EnableModules"] = "/experimental:module"; }),
                 Options.Option(Options.Vc.Compiler.EnableModules.Disable, () => { context.Options["EnableModules"] = "false"; context.CommandLineOptions["EnableModules"] = FileGeneratorUtilities.RemoveLineTag; })
             );
-            
-            context.SelectOption(
-                Options.Option(Options.Vc.Compiler.BuildStlModules.Default, () => { context.Options["GenerateManifest"] = FileGeneratorUtilities.RemoveLineTag; context.CommandLineOptions["BuildStlModules"] = FileGeneratorUtilities.RemoveLineTag; }),
-                Options.Option(Options.Vc.Compiler.BuildStlModules.Enable, () => { context.Options["BuildStlModules"] = "true"; context.CommandLineOptions["BuildStlModules"] = "/reference \"std=std.ifc\""; }),
-                Options.Option(Options.Vc.Compiler.BuildStlModules.Disable, () => { context.Options["BuildStlModules"] = "false"; context.CommandLineOptions["BuildStlModules"] = FileGeneratorUtilities.RemoveLineTag; })
-            );
-
+            {
+                //var VcTools = conf.Get
+                context.SelectOption(
+                    Options.Option(Options.Vc.Compiler.BuildStlModules.Default, () => { context.Options["GenerateManifest"] = FileGeneratorUtilities.RemoveLineTag; context.CommandLineOptions["BuildStlModules"] = FileGeneratorUtilities.RemoveLineTag; }),
+                    Options.Option(Options.Vc.Compiler.BuildStlModules.Enable, () =>  { context.Options["BuildStlModules"] = "true"; context.CommandLineOptions["BuildStlModules"] = FileGeneratorUtilities.RemoveLineTag; }),
+                    Options.Option(Options.Vc.Compiler.BuildStlModules.Disable, () => { context.Options["BuildStlModules"] = "false"; context.CommandLineOptions["BuildStlModules"] = FileGeneratorUtilities.RemoveLineTag; })
+                );
+            }
             bool clrSupport = Util.IsDotNet(context.Configuration);
             if (!clrSupport && context.DevelopmentEnvironment.IsVisualStudio() && context.DevelopmentEnvironment < DevEnv.vs2019) // Gm is deprecated starting with vs2019
             {
