@@ -781,7 +781,7 @@ namespace Sharpmake.Generators.VisualStudio
             {
                 //var VcTools = conf.Get
                 context.SelectOption(
-                    Options.Option(Options.Vc.Compiler.BuildStlModules.Default, () => { context.Options["GenerateManifest"] = FileGeneratorUtilities.RemoveLineTag; context.CommandLineOptions["BuildStlModules"] = FileGeneratorUtilities.RemoveLineTag; }),
+                    Options.Option(Options.Vc.Compiler.BuildStlModules.Default, () => { context.Options["BuildStlModules"] = FileGeneratorUtilities.RemoveLineTag; context.CommandLineOptions["BuildStlModules"] = FileGeneratorUtilities.RemoveLineTag; }),
                     Options.Option(Options.Vc.Compiler.BuildStlModules.Enable, () =>  { context.Options["BuildStlModules"] = "true"; context.CommandLineOptions["BuildStlModules"] = FileGeneratorUtilities.RemoveLineTag; }),
                     Options.Option(Options.Vc.Compiler.BuildStlModules.Disable, () => { context.Options["BuildStlModules"] = "false"; context.CommandLineOptions["BuildStlModules"] = FileGeneratorUtilities.RemoveLineTag; })
                 );
