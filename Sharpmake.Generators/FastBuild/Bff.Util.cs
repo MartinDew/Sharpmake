@@ -425,18 +425,14 @@ namespace Sharpmake.Generators.FastBuild
             // Fragments are enums by contract, so Enum.ToObject works
             var typedFragment = Enum.ToObject(fragmentFieldInfo.FieldType, unityFragment);
 
-            if (typedFragment is Platform)
+            if (typedFragment is Platform platformFragment)
             {
-                Platform platformFragment = (Platform)typedFragment;
                 foreach (Platform platformEnum in Enum.GetValues(typeof(Platform)))
                 {
                     if (!platformFragment.HasFlag(platformEnum))
                         continue;
 
-                    string platformString = platformEnum.ToString();
-                    if (platformEnum >= Platform._reservedPlatformSection)
-                        platformString = Util.GetSimplePlatformString(platformEnum);
-                    fragmentString += "_" + SanitizeForUnityName(platformString).ToLower();
+                    fragmentString += "_" + SanitizeForUnityName(Util.GetSimplePlatformString(platformEnum)).ToLower();
                 }
             }
             else
@@ -583,7 +579,7 @@ namespace Sharpmake.Generators.FastBuild
         internal static string GetBffFileCopyPattern(string copyPattern)
         {
             if (string.IsNullOrEmpty(copyPattern))
-                return copyPattern;
+                return FileGeneratorUtilities.RemoveLineTag;
 
             string[] patterns = copyPattern.Split(null);
 
