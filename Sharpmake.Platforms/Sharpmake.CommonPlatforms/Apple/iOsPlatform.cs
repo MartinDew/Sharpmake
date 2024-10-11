@@ -39,11 +39,6 @@ namespace Sharpmake
             }
             #endregion
 
-            protected override void WriteCompilerExtraOptionsGeneral(IFileGenerator generator)
-            {
-                base.WriteCompilerExtraOptionsGeneral(generator);
-            }
-
             public override void SelectCompilerOptions(IGenerationContext context)
             {
                 base.SelectCompilerOptions(context);
@@ -54,14 +49,7 @@ namespace Sharpmake
 
                 // Sysroot
                 options["SDKRoot"] = "iphoneos";
-                cmdLineOptions["SDKRoot"] = $"-isysroot {XCodeDeveloperFolder}/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk";
-                Options.XCode.Compiler.SDKRoot customSdkRoot = Options.GetObject<Options.XCode.Compiler.SDKRoot>(conf);
-                if (customSdkRoot != null)
-                {
-                    // Xcode doesn't accept the customized sdk path as SDKRoot
-                    //options["SDKRoot"] = customSdkRoot.Value;
-                    cmdLineOptions["SDKRoot"] = $"-isysroot {customSdkRoot.Value}";
-                }
+                cmdLineOptions["SDKRoot"] = $"-isysroot {ApplePlatform.Settings.IPhoneOSSDKPath}";
 
                 // Target
                 options["MacOSDeploymentTarget"] = FileGeneratorUtilities.RemoveLineTag;
@@ -237,8 +225,7 @@ namespace Sharpmake
                 base.SelectLinkerOptions(context);
 
                 // Sysroot
-                var defaultSdkRoot = $"{XCodeDeveloperFolder}/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk";
-                SelectCustomSysLibRoot(context, defaultSdkRoot);
+                SelectCustomSysLibRoot(context, ApplePlatform.Settings.IPhoneOSSDKPath);
             }
         }
     }

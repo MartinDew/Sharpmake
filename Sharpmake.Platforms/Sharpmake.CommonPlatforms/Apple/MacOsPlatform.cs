@@ -48,14 +48,7 @@ namespace Sharpmake
 
                 // Sysroot
                 options["SDKRoot"] = "macosx";
-                cmdLineOptions["SDKRoot"] = $"-isysroot {XCodeDeveloperFolder}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk";
-                Options.XCode.Compiler.SDKRoot customSdkRoot = Options.GetObject<Options.XCode.Compiler.SDKRoot>(conf);
-                if (customSdkRoot != null)
-                {
-                    // Xcode doesn't accept the customized sdk path as SDKRoot
-                    //options["SDKRoot"] = customSdkRoot.Value;
-                    cmdLineOptions["SDKRoot"] = $"-isysroot {customSdkRoot.Value}";
-                }
+                cmdLineOptions["SDKRoot"] = $"-isysroot {ApplePlatform.Settings.MacOSSDKPath}";
 
                 // Target
                 options["IPhoneOSDeploymentTarget"] = FileGeneratorUtilities.RemoveLineTag;
@@ -123,8 +116,7 @@ namespace Sharpmake
                 base.SelectLinkerOptions(context);
 
                 // Sysroot
-                var defaultSdkRoot = $"{XCodeDeveloperFolder}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk";
-                SelectCustomSysLibRoot(context, defaultSdkRoot);
+                SelectCustomSysLibRoot(context, ApplePlatform.Settings.MacOSSDKPath);
             }
         }
     }

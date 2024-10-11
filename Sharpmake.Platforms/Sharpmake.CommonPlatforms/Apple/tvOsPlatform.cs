@@ -40,11 +40,6 @@ namespace Sharpmake
             }
             #endregion
 
-            protected override void WriteCompilerExtraOptionsGeneral(IFileGenerator generator)
-            {
-                base.WriteCompilerExtraOptionsGeneral(generator);
-            }
-
             public override void SelectCompilerOptions(IGenerationContext context)
             {
                 base.SelectCompilerOptions(context);
@@ -55,14 +50,7 @@ namespace Sharpmake
 
                 // Sysroot
                 options["SDKRoot"] = "appletvos";
-                cmdLineOptions["SDKRoot"] = $"-isysroot {XCodeDeveloperFolder}/Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS.sdk";
-                Options.XCode.Compiler.SDKRoot customSdkRoot = Options.GetObject<Options.XCode.Compiler.SDKRoot>(conf);
-                if (customSdkRoot != null)
-                {
-                    // Xcode doesn't accept the customized sdk path as SDKRoot
-                    //options["SDKRoot"] = customSdkRoot.Value;
-                    cmdLineOptions["SDKRoot"] = $"-isysroot {customSdkRoot.Value}";
-                }
+                cmdLineOptions["SDKRoot"] = $"-isysroot {ApplePlatform.Settings.TVOSSDKPath}";
 
                 // Target
                 options["MacOSDeploymentTarget"] = FileGeneratorUtilities.RemoveLineTag;
@@ -98,8 +86,7 @@ namespace Sharpmake
                 base.SelectLinkerOptions(context);
 
                 // Sysroot
-                var defaultSdkRoot = $"{XCodeDeveloperFolder}/Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS.sdk";
-                SelectCustomSysLibRoot(context, defaultSdkRoot);
+                SelectCustomSysLibRoot(context, ApplePlatform.Settings.TVOSSDKPath);
             }
         }
     }

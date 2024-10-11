@@ -58,8 +58,7 @@ Settings
 ";
 
                 public const string WinEnvironment =
-@"#if __WINDOWS__[envRemoveGuards]
-    #import TMP
+@"    #import TMP
     #import TEMP
     #import USERPROFILE
     .Environment =
@@ -71,19 +70,24 @@ Settings
         ""PATH=[fastBuildPATH]""
 [envAdditionalVariables]
     }
-#endif[envRemoveGuards]
 ";
 
                 public const string OsxEnvironment =
-@"#if __OSX__[envRemoveGuards]
-    #import TMPDIR
+@"    #import TMPDIR
     .Environment =
     {
         ""TMPDIR=$TMPDIR$"",
         ""PATH=[fastBuildPATH]""
 [envAdditionalVariables]
     }
-#endif[envRemoveGuards]
+";
+
+                public const string LinuxEnvironment =
+@"    .Environment =
+    {
+        ""PATH=[fastBuildPATH]""
+[envAdditionalVariables]
+    }
 ";
 
                 public static string MasmConfigNameSuffix = "Masm";

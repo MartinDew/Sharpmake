@@ -117,7 +117,7 @@ namespace Sharpmake.Generators.VisualStudio
 
                 PresentPlatforms = ProjectConfigurations.Select(conf => conf.Platform).Distinct().ToDictionary(p => p, p => PlatformRegistry.Get<IPlatformVcxproj>(p));
 
-                FastBuildMakeCommandGenerator = FastBuildSettings.MakeCommandGenerator ?? new Bff.FastBuildDefaultNMakeCommandGenerator();
+                FastBuildMakeCommandGenerator = FastBuildSettings.MakeCommandGenerator;
             }
 
             public void Reset()
@@ -513,77 +513,18 @@ namespace Sharpmake.Generators.VisualStudio
 
                         if (conf.IsFastBuild)
                         {
-                            var fastBuildCommandLineOptions = new List<string>();
-
-                            if (FastBuildSettings.FastBuildUseIDE)
-                                fastBuildCommandLineOptions.Add("-ide");
-
-                            if (FastBuildSettings.FastBuildReport)
-                                fastBuildCommandLineOptions.Add("-report");
-
-                            if (FastBuildSettings.FastBuildNoSummaryOnError)
-                                fastBuildCommandLineOptions.Add("-nosummaryonerror");
-
-                            if (FastBuildSettings.FastBuildSummary)
-                                fastBuildCommandLineOptions.Add("-summary");
-
-                            if (FastBuildSettings.FastBuildVerbose)
-                                fastBuildCommandLineOptions.Add("-verbose");
-
-                            if (FastBuildSettings.FastBuildMonitor)
-                                fastBuildCommandLineOptions.Add("-monitor");
-
-                            // Configuring cache mode if that configuration is allowed to use caching
-                            if (conf.FastBuildCacheAllowed)
-                            {
-                                // Setting the appropriate cache type commandline for that target.
-                                switch (FastBuildSettings.CacheType)
-                                {
-                                    case FastBuildSettings.CacheTypes.CacheRead:
-                                        fastBuildCommandLineOptions.Add("-cacheread");
-                                        break;
-                                    case FastBuildSettings.CacheTypes.CacheWrite:
-                                        fastBuildCommandLineOptions.Add("-cachewrite");
-                                        break;
-                                    case FastBuildSettings.CacheTypes.CacheReadWrite:
-                                        fastBuildCommandLineOptions.Add("-cache");
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-
-                            if (FastBuildSettings.FastBuildDistribution && conf.FastBuildDistribution)
-                                fastBuildCommandLineOptions.Add("-dist");
-
-                            if (FastBuildSettings.FastBuildWait)
-                                fastBuildCommandLineOptions.Add("-wait");
-
-                            if (FastBuildSettings.FastBuildNoStopOnError)
-                                fastBuildCommandLineOptions.Add("-nostoponerror");
-
-                            if (FastBuildSettings.FastBuildFastCancel)
-                                fastBuildCommandLineOptions.Add("-fastcancel");
-
-                            if (FastBuildSettings.FastBuildNoUnity)
-                                fastBuildCommandLineOptions.Add("-nounity");
-
-                            if (!string.IsNullOrEmpty(conf.FastBuildCustomArgs))
-                                fastBuildCommandLineOptions.Add(conf.FastBuildCustomArgs);
-
-                            if (!string.IsNullOrEmpty(FastBuildSettings.FastBuildCustomArguments))
-                                fastBuildCommandLineOptions.Add(FastBuildSettings.FastBuildCustomArguments);
-
-                            string commandLine = string.Join(" ", fastBuildCommandLineOptions);
+                            string commandLine = conf.GetFastBuildCommandLineArguments();
 
                             // Make the commandline written in the bff available, except the master bff -config
                             Bff.SetCommandLineArguments(conf, commandLine);
 
                             commandLine += " -config $(SolutionName)" + FastBuildSettings.FastBuildConfigFileExtension;
 
+                            string makeExecutable = context.FastBuildMakeCommandGenerator.GetExecutablePath(conf);
                             using (fileGenerator.Declare("relativeMasterBffPath", "$(SolutionDir)"))
-                            using (fileGenerator.Declare("fastBuildMakeCommandBuild", context.FastBuildMakeCommandGenerator.GetCommand(FastBuildMakeCommandGenerator.BuildType.Build, conf, commandLine)))
-                            using (fileGenerator.Declare("fastBuildMakeCommandRebuild", context.FastBuildMakeCommandGenerator.GetCommand(FastBuildMakeCommandGenerator.BuildType.Rebuild, conf, commandLine)))
+                            using (fileGenerator.Declare("fastBuildMakeCommandBuild", $"{makeExecutable} {context.FastBuildMakeCommandGenerator.GetArguments(FastBuildMakeCommandGenerator.BuildType.Build, conf, commandLine)}"))
+                            using (fileGenerator.Declare("fastBuildMakeCommandRebuild", $"{makeExecutable} {context.FastBuildMakeCommandGenerator.GetArguments(FastBuildMakeCommandGenerator.BuildType.Rebuild, conf, commandLine)}"))
+                            using (fileGenerator.Declare("fastBuildMakeCommandCompileFile", $"{makeExecutable} {context.FastBuildMakeCommandGenerator.GetArguments(FastBuildMakeCommandGenerator.BuildType.CompileFile, conf, commandLine)}"))
                             {
                                 platformVcxproj.GenerateProjectConfigurationFastBuildMakeFile(context, fileGenerator);
                             }

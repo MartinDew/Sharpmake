@@ -180,7 +180,8 @@ namespace Sharpmake
                     Disable,
                     SWIFT4_0,
                     SWIFT4_2,
-                    SWIFT5_0
+                    SWIFT5_0,
+                    SWIFT6_0
                 }
 
                 public enum DeadStrip
@@ -264,6 +265,12 @@ namespace Sharpmake
                     Enable
                 }
 
+                public enum AsyncExceptions
+                {
+                    [Default]
+                    Disable,
+                    Enable
+                }
                 public class ExternalResourceFolders : Strings
                 {
                     public ExternalResourceFolders(params string[] paths)
@@ -450,6 +457,7 @@ namespace Sharpmake
                     Enable
                 }
 
+                [Obsolete("Deprecated and Ignored. Use `ApplePlatform.Settings.MacOSSDKPath` instead.", error: true)]
                 public class SDKRoot
                 {
                     public string Value;
@@ -1152,6 +1160,17 @@ namespace Sharpmake
                     [Default]
                     Enable
                 }
+
+                /// <summary>
+                /// Sets an internal install path (LC_ID_DYLIB) in a dynamic library. Any clients linked against the library will record that path as the way dyld should locate this library.
+                /// </summary>
+                public class DyLibInstallName : StringOption
+                {
+                    public DyLibInstallName(string value) : base(value)
+                    {
+                    }
+                }
+
             }
 
             /// <summary>
@@ -1177,6 +1196,21 @@ namespace Sharpmake
                 {
                     public DebugArguments(List<string> args)
                         : base(args) 
+                    {
+                    }
+                }
+
+                public class EnvironmentVariables
+                {
+                    public Dictionary<string, string> Variables { get; set; } = new Dictionary<string, string>();
+                }
+
+                /// <summary>
+                /// This option can be used to set a custom runnable path in the scheme file for fastbuild targets
+                /// </summary>
+                public class CustomRunnablePath : PathOption
+                {
+                    public CustomRunnablePath(string path) : base(path)
                     {
                     }
                 }

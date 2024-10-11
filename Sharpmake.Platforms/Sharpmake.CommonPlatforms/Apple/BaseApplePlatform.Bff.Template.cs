@@ -30,6 +30,7 @@ namespace Sharpmake
                             // Additional linker options
                             //--------------------------
                             + ' [options.AdditionalLinkerOptions]'
+                            + ' [cmdLineOptions.DyLibInstallName]'
 ";
 
         private const string _compilerExtraOptionsGeneral = @"
@@ -51,6 +52,8 @@ namespace Sharpmake
             + ' [cmdLineOptions.CppExceptions]'
             + ' [cmdLineOptions.ObjCExceptions]'
             + ' [cmdLineOptions.ObjCARCExceptions]'
+            + ' [cmdLineOptions.DisableExceptions]'
+            + ' [cmdLineOptions.PrivateInlines]'
 ";
 
         private const string _compilerExtraOptionsAdditional = @"

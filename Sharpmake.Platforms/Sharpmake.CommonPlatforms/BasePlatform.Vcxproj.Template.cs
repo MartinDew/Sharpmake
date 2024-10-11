@@ -277,6 +277,13 @@ del ""[options.OutputDirectory]\[conf.TargetFileFullName].pdb"" &gt;NUL 2&gt;NUL
     <NMakeForcedIncludes>[options.ForcedIncludeFiles]</NMakeForcedIncludes>
     <AdditionalOptions>[options.AdditionalOptions]</AdditionalOptions>
   </PropertyGroup>
+  <ItemDefinitionGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>cd [relativeMasterBffPath]
+[conf.FastBuildCustomActionsBeforeBuildCommand]
+[fastBuildMakeCommandCompileFile] </NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
 ";
 
         private const string _projectConfigurationsCustomMakefile =
@@ -292,6 +299,11 @@ del ""[options.OutputDirectory]\[conf.TargetFileFullName].pdb"" &gt;NUL 2&gt;NUL
     <NMakeForcedIncludes>[options.ForcedIncludeFiles]</NMakeForcedIncludes>
     <AdditionalOptions>[options.AdditionalOptions]</AdditionalOptions>
   </PropertyGroup>
+  <ItemDefinitionGroup Condition=""'$(Configuration)|$(Platform)'=='[conf.Name]|[platformName]'"">
+    <NMakeCompile>
+      <NMakeCompileFileCommandLine>[conf.CustomBuildSettings.CompileFileCommand]</NMakeCompileFileCommandLine>
+    </NMakeCompile>
+  </ItemDefinitionGroup>
 ";
     }
 }

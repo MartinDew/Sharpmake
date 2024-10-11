@@ -641,19 +641,20 @@ namespace Sharpmake.Generators.FastBuild
 
             string envRemoveGuards = FileGeneratorUtilities.RemoveLineTag;
             string fastBuildEnvironments = string.Empty;
-            if (allDevEnv.Contains(DevEnv.xcode))
+
+            switch (Util.GetExecutingPlatform())
             {
-                // we'll keep the #if guards if we have other devenv in the file
-                if (allDevEnv.Count > 1)
-                {
-                    envRemoveGuards = string.Empty;
+                case Platform.win64:
                     fastBuildEnvironments += Bff.Template.ConfigurationFile.WinEnvironment;
-                }
-                fastBuildEnvironments += Bff.Template.ConfigurationFile.OsxEnvironment;
-            }
-            else
-            {
-                fastBuildEnvironments += Bff.Template.ConfigurationFile.WinEnvironment;
+                    break;
+                case Platform.mac:
+                    fastBuildEnvironments += Bff.Template.ConfigurationFile.OsxEnvironment;
+                    break;
+                case Platform.linux:
+                    fastBuildEnvironments += Bff.Template.ConfigurationFile.LinuxEnvironment;
+                    break;
+                default:
+                    throw new NotImplementedException($"Environment variables bff config not implemented for platform {Util.GetExecutingPlatform()}");
             }
 
             string envAdditionalVariables = FileGeneratorUtilities.RemoveLineTag;
